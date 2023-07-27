@@ -105,7 +105,7 @@ fi
 # Added by Zach
 
 # alias q=exit
-alias tmat='matlab -nodesktop -nosplash'
+alias tmat='matlab -nodesktop -nosplash -softwareopengl'
 alias jp='julia --project'
 alias jt="julia --project --color=yes -e 'using Pkg; Pkg.test()'"
 
@@ -170,9 +170,9 @@ alias jlvim=open_gvim_in_jl_dir
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-export PATH="/home/zach/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# export PATH="/home/zach/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
 # source /opt/ros/melodic/setup.bash
 
@@ -194,3 +194,35 @@ unset __conda_setup
 # <<< conda init <<<
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+eval "$(pyenv init -)"
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
+
+alias jup='jupyter notebook --NotebookApp.kernel_manager_class=notebook.services.kernels.kernelmanager.AsyncMappingKernelManager'
+
+weylus_over_usb() {
+    weylus --bind-address $(ifconfig usb0 | grep -oP 'inet \K[^ ]+')
+}
+
+weylus_over_wifi() {
+    weylus --bind-address $(ifconfig wlp3s0 | grep -oP 'inet \K[^ ]+')
+}
+
+alias wifitab=weylus_over_wifi
+alias usbtab=weylus_over_usb
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/zach/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/zach/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<

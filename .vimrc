@@ -1,6 +1,7 @@
 " github.com/gmarik/vundle
 set nocompatible
 filetype off
+set noswapfile "embrace life on the edge
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -26,8 +27,8 @@ Plugin 'vim-scripts/greplace.vim'
 " HERE
 
 "https://github.com/garbas/vim-snipmate
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
+"Plugin 'MarcWeber/vim-addon-mw-utils'
+"Plugin 'tomtom/tlib_vim'
 "Plugin 'garbas/vim-snipmate'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -55,11 +56,16 @@ Plugin 'jpalardy/vim-slime'
 
 Plugin 'lervag/vimtex'
 
-Plugin 'szymonmaszke/vimpyter'
+"Plugin 'szymonmaszke/vimpyter'
 
 Plugin '907th/vim-auto-save'
 
 Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'yorickpeterse/vim-paper.git'
+
+" Plugin 'Rykka/clickable.vim'
+" Plugin 'Rykka/clickable-things'
 
 call vundle#end()
 
@@ -69,6 +75,7 @@ iabbrev <expr> dts strftime("%c")
 filetype plugin indent on
 
 colorscheme desert256
+hi link matlabCellComment matlabComment
 
 inoremap <C-space> <C-p>
 inoremap <C-@> <C-p>
@@ -117,6 +124,7 @@ autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
 "let $FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g' "https://github.com/junegunn/fzf/issues/337
 let $FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""' "https://github.com/junegunn/fzf/issues/337
 :nmap <C-o> :FZF<CR>
+:nmap <C-f> :Ag<CR>
 
 "for DOS line endings
 ":nmap <C-m> :e ++ff=dos<CR>
@@ -155,7 +163,6 @@ command Lualatex :let g:Tex_CompileRule_pdf = 'lualatex -synctex=1 -interaction=
 let g:vimtex_view_general_viewer = 'qpdfview'
 let g:vimtex_view_general_options
               \ = '--unique @pdf\#src:@tex:@line:@col'
-let g:vimtex_view_general_options_latexmk = '--unique'
 
 " http://tex.stackexchange.com/questions/2941/how-to-setup-synctex-with-vim-pdflatex-and-an-open-source-pdf-viewer-under-linu
 function! SyncTexForward()
@@ -274,6 +281,46 @@ let g:auto_save_events = ["InsertLeave", "TextChanged", "CursorHoldI"]
 " Enclose <args> in single quotes so it can be passed as a function argument.
 com! -nargs=1 RemoteOpen :call RemoteOpen('<args>')
 com! -nargs=? RemoteInsert :call RemoteInsert('<args>')
+
+:let g:netrw_browsex_viewer="setsid xdg-open"
+
+set complete=.,w,b,u,t
+
+if has("unix")
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+else
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+endif
+
+
+if has("gui_running")
+    nmap <S-F12> :call FontSizeMinus()<CR>
+    nmap <F12> :call FontSizePlus()<CR>
+endif
 
 " RemoteOpen: open a file remotely (if possible) {{{
 " Description: checks all open vim windows to see if this file has been opened

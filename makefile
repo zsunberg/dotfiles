@@ -9,7 +9,7 @@ vim: vundle vimrc
 
 vimrc:
 	rm -f ~/.vimrc.old && mv -n ~/.vimrc ~/.vimrc.old
-	ln -s settings/.vimrc ~/.vimrc
+	ln -s dotfiles/.vimrc ~/.vimrc
 
 vundle: vimrc ~/.vim/bundle/Vundle.vim/README.md
 	vim +BundleInstall +qall
@@ -19,7 +19,7 @@ vundle: vimrc ~/.vim/bundle/Vundle.vim/README.md
 
 bashrc:
 	rm -f ~/.bashrc.old && mv -n ~/.bashrc ~/.bashrc.old
-	ln -s settings/.bashrc ~/.bashrc
+	ln -s dotfiles/.bashrc ~/.bashrc
 
 # kde:
 # 	-( mv -n ~/.kde ~/.kde.old && rm ~/.kde )
