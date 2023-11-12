@@ -170,7 +170,7 @@ alias jlvim=open_gvim_in_jl_dir
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-# export PATH="/home/zach/.pyenv/bin:$PATH"
+export PATH="/home/zach/.pyenv/bin:$PATH"
 # eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
